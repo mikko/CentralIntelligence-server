@@ -40,6 +40,19 @@ const routes = [
     },
     {
         method: 'POST',
+        path: `/reply`,
+        config: {
+            handler: handlers.reply,
+            validate: {
+                payload: {
+                    message: Joi.string().required(),
+                    context: Joi.object().required()
+                }
+            }
+        }
+    },
+    {
+        method: 'POST',
         path: `/command`,
         config: {
             handler: handlers.command,

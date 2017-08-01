@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "hapi": "^16.4.3",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "simple-nlp": "git+ssh://git@github.com/mikko/simple-nlp.git"
   }
 }
