@@ -1,15 +1,24 @@
 const Joi = require('joi');
 const Hapi = require('hapi');
 const handlers = require('./lib/handlers');
+const serverConfig = require('./server-config');
+const internalClientServer = require('./lib/internalClientServer');
 
 let serverOptions = {};
 
 const server = new Hapi.Server(serverOptions);
 
-const port = 3000;
+const port = serverConfig.port;
 
 
 const routes = [
+    {
+        method: 'GET',
+        path: `/alive`,
+        config: {
+            handler: (req, reply) => reply('Alive')
+        }
+    },
     {
         method: 'POST',
         path: `/register`,
@@ -20,7 +29,8 @@ const routes = [
                     name: Joi.string().required(),
                     host: Joi.string().required(),
                     port: Joi.number().required(),
-                    actions: Joi.object()
+                    actions: Joi.object(),
+                    commands: Joi.array()
                 }
             }
         }
@@ -59,6 +69,7 @@ const routes = [
             validate: {
                 payload: {
                     command: Joi.string().required(),
+                    parameters: Joi.string().allow(''),
                     context: Joi.object().required()
                 }
             }
@@ -76,8 +87,18 @@ routes.forEach(route => {
 
 server.start(err => {
     if (err) {
+        console.log(err);
         throw err;
     }
     console.log('Central Intelligence running', server.info.uri);
 
+    const commonConfig = {
+        serverHost: 'localhost',
+        serverPort: serverConfig.port,
+        myHost: 'localhost',
+        myPort: serverConfig.internalClientPort,
+    };
+
+    // Start internal commands and actions
+    internalClientServer.start(commonConfig);
 });
