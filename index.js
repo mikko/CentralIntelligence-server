@@ -3,6 +3,7 @@ const Hapi = require('hapi');
 const handlers = require('./lib/handlers');
 const serverConfig = require('./server-config');
 const internalClientServer = require('./lib/internalClientServer');
+const auth = require('./lib/auth');
 
 let serverOptions = {};
 
@@ -10,6 +11,7 @@ const server = new Hapi.Server(serverOptions);
 
 const port = serverConfig.port;
 
+auth.setAuthKey(serverConfig.authKey);
 
 const routes = [
     {
@@ -30,7 +32,9 @@ const routes = [
                     host: Joi.string().required(),
                     port: Joi.number().required(),
                     actions: Joi.object(),
-                    commands: Joi.array()
+                    commands: Joi.array(),
+                    authKey: Joi.string(),
+                    trustedUserGroups: Joi.object()
                 }
             }
         }
@@ -70,6 +74,7 @@ const routes = [
                 payload: {
                     command: Joi.string().required(),
                     parameters: Joi.string().allow(''),
+                    JSONPayload: Joi.object(),
                     context: Joi.object().required()
                 }
             }
