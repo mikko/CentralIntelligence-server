@@ -102,6 +102,7 @@ server.start(err => {
         serverPort: serverConfig.port,
         myHost: 'localhost',
         myPort: serverConfig.internalClientPort,
+        authKey: serverConfig.authKey
     };
 
     // Start internal commands and actions
