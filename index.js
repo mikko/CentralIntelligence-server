@@ -34,7 +34,7 @@ const routes = [
                     actions: Joi.object(),
                     commands: Joi.array(),
                     authKey: Joi.string(),
-                    trustedUserGroups: Joi.object()
+                    trustedUserGroups: Joi.alternatives().try(Joi.object(), Joi.string())
                 }
             }
         }
