@@ -13,8 +13,10 @@
     "ci-client": "github:mikko/CentralIntelligence-client",
     "ddg": "0.0.3",
     "hapi": "^16.4.3",
+    "joi": "^11.0.2",
     "lodash": "^4.17.4",
     "request": "^2.81.0",
-    "simple-nlp": "mikko/simple-nlp"
+    "simple-nlp": "mikko/simple-nlp",
+    "wolfram": "^0.3.4"
   }
 }
